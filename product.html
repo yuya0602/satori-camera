@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helios 44-2 58mm F2 | SATORI CAMERA</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', 'sans-serif'],
+                    },
+                    colors: {
+                        glass: {
+                            100: 'rgba(255, 255, 255, 0.03)',
+                            200: 'rgba(255, 255, 255, 0.07)',
+                            300: 'rgba(255, 255, 255, 0.15)',
+                            400: 'rgba(255, 255, 255, 0.25)',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles (Same as LP) */
+        body {
+            background-color: #0f0f11;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.07;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0f11;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .fade-up-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .fade-up-element.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-500 { transition-delay: 500ms; }
+
+        /* Image Gallery Styles */
+        .gallery-thumbnail.active {
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Lightbox Modal Transition */
+        #lightbox-modal {
+            transition: opacity 0.3s ease-in-out;
+        }
+        #lightbox-modal.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #lightbox-modal:not(.hidden) {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="fixed inset-0 z-[-2] overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-900 rounded-full mix-blend-multiply filter blur-[128px] opacity-30 animate-blob"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-900 rounded-full mix-blend-multiply filter blur-[128px] opacity-30 animate-blob animation-delay-2000"></div>
+    </div>
+
+    <div class="bg-noise"></div>
+
+    <nav class="fixed w-full z-40 top-0 p-6">
+        <div class="max-w-7xl mx-auto flex justify-between items-center bg-glass-200 backdrop-blur-xl border border-white/10 rounded-2xl px-8 py-4 shadow-lg">
+            <a href="index.html" class="text-2xl font-bold tracking-widest text-white flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                SATORI
+            </a>
+            <div class="flex space-x-6 text-sm tracking-widest uppercase text-gray-300 items-center">
+                <a href="#" class="hover:text-white transition-colors">Cart (0)</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-20 px-4 md:px-8 relative min-h-screen flex items-center">
+        <div class="max-w-7xl mx-auto w-full">
+            
+            <div class="bg-glass-100 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl fade-up-element">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-8">
+                    
+                    <div class="lg:col-span-7 p-4 md:p-8 lg:border-r border-white/5 bg-white/1">
+                        
+                        <div class="relative aspect-[4/3] rounded-2xl overflow-hidden cursor-zoom-in group border border-white/5" id="main-image-container">
+                            <img src="https://images.unsplash.com/photo-1617005082133-548c4dd27f35?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" 
+                                 alt="Helios 44-2 Front View" 
+                                 id="main-image"
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10 pointer-events-none"></div>
+                            <div class="absolute bottom-4 right-4 bg-black/50 p-2 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-4 mt-6 overflow-x-auto pb-2 scrollbar-hide">
+                            <button class="gallery-thumbnail active w-24 h-24 flex-shrink-0 rounded-xl border-2 border-transparent overflow-hidden transition-all duration-300 hover:border-white/50 focus:outline-none"
+                                    data-src="https://images.unsplash.com/photo-1617005082133-548c4dd27f35?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80">
+                                <img src="https://images.unsplash.com/photo-1617005082133-548c4dd27f35?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Thumb 1" class="w-full h-full object-cover">
+                            </button>
+                            <button class="gallery-thumbnail w-24 h-24 flex-shrink-0 rounded-xl border-2 border-transparent overflow-hidden transition-all duration-300 hover:border-white/50 focus:outline-none"
+                                    data-src="https://images.unsplash.com/photo-1510849529004-730351a05b54?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80">
+                                <img src="https://images.unsplash.com/photo-1510849529004-730351a05b54?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Thumb 2" class="w-full h-full object-cover">
+                            </button>
+                             <button class="gallery-thumbnail w-24 h-24 flex-shrink-0 rounded-xl border-2 border-transparent overflow-hidden transition-all duration-300 hover:border-white/50 focus:outline-none"
+                                    data-src="https://images.unsplash.com/photo-1495707902641-75cac588d2e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80">
+                                <img src="https://images.unsplash.com/photo-1495707902641-75cac588d2e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Thumb 3" class="w-full h-full object-cover">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 p-6 md:p-10 flex flex-col justify-center relative overflow-hidden">
+                        <div class="absolute top-1/2 right-0 w-64 h-64 bg-blue-500 rounded-full mix-blend-overlay filter blur-[100px] opacity-20 pointer-events-none"></div>
+
+                        <div class="fade-up-element delay-100">
+                            <span class="inline-block py-1 px-3 rounded-full bg-blue-500/10 text-blue-300 text-xs font-bold tracking-wider uppercase mb-4 backdrop-blur-md border border-blue-500/20">
+                                Refurbished / M42 Mount
+                            </span>
+                            <h1 class="text-3xl md:text-5xl font-bold mb-4 leading-tight">
+                                Helios 44-2<br>58mm F2
+                            </h1>
+                            <div class="flex items-center space-x-4 mb-8">
+                                <span class="text-3xl font-mono font-semibold">¥18,000</span>
+                                <span class="text-sm text-gray-400 line-through">¥22,000</span>
+                                <span class="text-xs text-green-400 tracking-wider">IN STOCK</span>
+                            </div>
+                        </div>
+
+                        <div class="fade-up-element delay-200 mb-10 space-y-6 text-gray-300 font-light leading-relaxed">
+                            <p>
+                                「ぐるぐるボケ」の代名詞として知られる、旧ソビエト製レンズの最高傑作。
+                            </p>
+                            <p>
+                                開放F2での撮影時には、背景が渦を巻くような独特の描写が得られます。中心部のシャープさと、周辺部の奔放なボケ味のコントラストが、あなたの写真に幻想的な物語を与えます。
+                            </p>
+                            <p class="text-sm text-gray-400">
+                                ※ 当店専門スタッフによる完全オーバーホール済み。ヘリコイドグリス交換、レンズ内清掃、無限遠調整を行っており、スムーズな操作感をお約束します。
+                            </p>
+                        </div>
+
+                        <div class="fade-up-element delay-300 mb-10 border-t border-b border-white/10 py-6">
+                             <h3 class="text-sm font-bold uppercase tracking-widest mb-4 text-gray-200">Specifications</h3>
+                             <dl class="grid grid-cols-2 gap-y-3 text-sm">
+                                 <dt class="text-gray-500">Focal Length</dt>
+                                 <dd class="text-gray-200 font-mono">58mm</dd>
+                                 <dt class="text-gray-500">Max Aperture</dt>
+                                 <dd class="text-gray-200 font-mono">f/2.0</dd>
+                                 <dt class="text-gray-500">Mount Type</dt>
+                                 <dd class="text-gray-200">M42 Screw Mount</dd>
+                                 <dt class="text-gray-500">Filter Size</dt>
+                                 <dd class="text-gray-200 font-mono">49mm</dd>
+                                 <dt class="text-gray-500">Condition</dt>
+                                 <dd class="text-blue-300">Excellent (Refurbished)</dd>
+                             </dl>
+                        </div>
+
+                        <div class="fade-up-element delay-500">
+                            <button class="group relative w-full flex items-center justify-center px-8 py-5 text-base font-bold text-white transition-all duration-300 bg-white/10 border border-white/20 rounded-xl hover:bg-white/20 hover:scale-[1.02] hover:border-white/40 backdrop-blur-md overflow-hidden">
+                                <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-blue-500 rounded-full group-hover:w-full group-hover:h-96 opacity-10 mb-32 ml-24"></span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 relative" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                </svg>
+                                <span class="relative tracking-widest">ADD TO CART</span>
+                            </button>
+                            <p class="text-center text-xs text-gray-500 mt-4">
+                                Free shipping on orders over ¥30,000.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-white/10 bg-[#050505] py-10 px-6 relative z-10 text-center text-gray-600 text-sm">
+        <p>&copy; 2024 SATORI CAMERA. All rights reserved.</p>
+    </footer>
+
+
+    <div id="lightbox-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 md:p-10" onclick="closeLightbox(event)">
+        <div class="relative max-w-5xl w-full h-full flex items-center justify-center">
+            <button onclick="closeLightbox(event)" class="absolute -top-2 -right-2 md:top-4 md:right-4 z-10 bg-white/10 hover:bg-white/30 text-white rounded-full p-2 transition-colors backdrop-blur-md">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <img id="lightbox-image" src="" alt="Expanded Product Image" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl border border-white/10">
+        </div>
+    </div>
+
+
+    <script>
+        // Animation Observer (Same as LP)
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-up-element').forEach(el => observer.observe(el));
+            
+            // Initialize gallery interactivity
+            initGallery();
+        });
+
+        // --- Gallery & Lightbox Logic ---
+        const mainImage = document.getElementById('main-image');
+        const mainImageContainer = document.getElementById('main-image-container');
+        const thumbnails = document.querySelectorAll('.gallery-thumbnail');
+        const lightboxModal = document.getElementById('lightbox-modal');
+        const lightboxImage = document.getElementById('lightbox-image');
+
+        function initGallery() {
+            // Thumbnail Click Event
+            thumbnails.forEach(thumb => {
+                thumb.addEventListener('click', function() {
+                    // Update active state
+                    thumbnails.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update main image src with smooth transition
+                    const newSrc = this.getAttribute('data-src');
+                    mainImage.style.opacity = 0;
+                    setTimeout(() => {
+                        mainImage.src = newSrc;
+                        mainImage.style.opacity = 1;
+                    }, 200);
+                });
+            });
+
+            // Main Image Click Event to Open Lightbox
+            mainImageContainer.addEventListener('click', function() {
+                openLightbox(mainImage.src);
+            });
+        }
+
+        function openLightbox(src) {
+            lightboxImage.src = src;
+            lightboxModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeLightbox(event) {
+            // Close only if clicked on the overlay or close button, not the image itself
+            if (event.target === lightboxModal || event.target.closest('button')) {
+                lightboxModal.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore scrolling
+                setTimeout(() => { lightboxImage.src = ''; }, 300); // Clear src after transition
+            }
+        }
+    </script>
+</body>
+</html>

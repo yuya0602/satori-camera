@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SATORI CAMERA | Old Lenses for Sony E-mount</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', 'sans-serif'],
+                    },
+                    colors: {
+                        glass: {
+                            100: 'rgba(255, 255, 255, 0.05)',
+                            200: 'rgba(255, 255, 255, 0.1)',
+                            300: 'rgba(255, 255, 255, 0.2)',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 10s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for Effects */
+        body {
+            background-color: #0f0f11;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Noise Texture using SVG Data URI for Grainy Effect */
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.07;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0f11;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Fade Up Animation Classes */
+        .fade-up-element {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .fade-up-element.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Delay utilities */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Text Stroke for stylistic headings */
+        .text-stroke {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+            color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="fixed inset-0 z-[-2] overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-900 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob"></div>
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-blue-900 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-32 left-1/3 w-96 h-96 bg-indigo-900 rounded-full mix-blend-multiply filter blur-[128px] opacity-40 animate-blob animation-delay-4000"></div>
+    </div>
+
+    <div class="bg-noise"></div>
+
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300 p-6">
+        <div class="max-w-7xl mx-auto flex justify-between items-center bg-glass-200 backdrop-blur-xl border border-white/10 rounded-2xl px-8 py-4 shadow-lg">
+            <a href="#" class="text-2xl font-bold tracking-widest text-white">SATORI</a>
+            <div class="hidden md:flex space-x-8 text-sm tracking-widest uppercase text-gray-300">
+                <a href="#philosophy" class="hover:text-white transition-colors duration-300">Philosophy</a>
+                <a href="#collection" class="hover:text-white transition-colors duration-300">Collection</a>
+                <a href="#journal" class="hover:text-white transition-colors duration-300">Journal</a>
+                <a href="#" class="text-white font-semibold">Store</a>
+            </div>
+            <div class="md:hidden text-white cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
+                 alt="Camera Lens" 
+                 class="w-full h-full object-cover opacity-60 scale-105 animate-float">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0f0f11] via-transparent to-black/40"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <p class="fade-up-element text-sm md:text-base tracking-[0.3em] uppercase text-gray-400 mb-6">
+                Refurbished Old Lenses & Sony E-mount
+            </p>
+            <h1 class="fade-up-element delay-100 text-5xl md:text-8xl font-bold tracking-tight mb-8 leading-tight">
+                Renaissance<br>
+                <span class="text-stroke text-white/10">of Light</span>
+            </h1>
+            <p class="fade-up-element delay-200 text-gray-300 text-lg md:text-xl font-light max-w-2xl mx-auto mb-12 leading-relaxed">
+                現代のセンサーに、伝説の描写を。<br>
+                オールドレンズの「味」と、最新の技術が交差する場所。
+            </p>
+            <div class="fade-up-element delay-300">
+                <a href="#collection" class="group relative inline-flex items-center justify-center px-8 py-4 text-sm font-medium text-white transition-all duration-200 bg-white/5 border border-white/20 rounded-full hover:bg-white/10 hover:scale-105 hover:border-white/40 backdrop-blur-sm overflow-hidden">
+                    <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
+                    <span class="relative tracking-widest">VIEW COLLECTION</span>
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center opacity-50 animate-bounce">
+            <span class="text-xs tracking-widest mb-2">SCROLL</span>
+            <div class="w-[1px] h-12 bg-gradient-to-b from-white to-transparent"></div>
+        </div>
+    </header>
+
+    <section id="philosophy" class="py-32 px-6 relative">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div class="order-2 md:order-1 relative fade-up-element">
+                <div class="absolute -inset-4 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl opacity-20 blur-lg"></div>
+                <img src="https://images.unsplash.com/photo-1554048612-387768052bf7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
+                     alt="Photographer" 
+                     class="relative rounded-xl border border-white/10 shadow-2xl w-full object-cover aspect-[4/5] grayscale hover:grayscale-0 transition-all duration-700">
+            </div>
+            
+            <div class="order-1 md:order-2 fade-up-element delay-100">
+                <h2 class="text-4xl md:text-5xl font-bold mb-8 leading-tight">
+                    Timeless Glass,<br>
+                    <span class="text-gray-500">Modern Soul.</span>
+                </h2>
+                <div class="space-y-6 text-gray-300 leading-relaxed font-light">
+                    <p>
+                        デジタル写真の鮮明さは素晴らしいものですが、時として「温度」が不足していると感じることはありませんか？
+                    </p>
+                    <p>
+                        SATORI CAMERAは、Helios、Zeiss、Leicaといった20世紀の銘玉（名作レンズ）を、現代のSony Eマウントボディ向けに完全整備して提供します。
+                    </p>
+                    <p>
+                        フレア、ゴースト、独特のボケ味。これらはノイズではなく、写真に物語を与える「声」です。
+                    </p>
+                </div>
+                <div class="mt-10">
+                    <a href="#" class="text-white border-b border-white/30 pb-1 hover:border-white transition-colors tracking-widest text-sm">READ OUR STORY</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="collection" class="py-32 px-6 relative bg-white/5 backdrop-blur-3xl">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex justify-between items-end mb-16 fade-up-element">
+                <div>
+                    <span class="text-blue-400 tracking-widest text-xs font-bold uppercase mb-2 block">Curated Selection</span>
+                    <h2 class="text-3xl md:text-4xl font-bold">Featured Lenses</h2>
+                </div>
+                <a href="#" class="hidden md:block text-sm text-gray-400 hover:text-white transition-colors">View All Items -></a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div class="group fade-up-element delay-100 cursor-pointer">
+                    <div class="relative overflow-hidden rounded-2xl bg-glass-100 border border-white/10 shadow-xl transition-all duration-500 hover:bg-glass-200 hover:border-white/30 hover:-translate-y-2">
+                        <div class="aspect-[4/3] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1617005082133-548c4dd27f35?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                                 alt="Helios 44-2" 
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold text-white">Helios 44-2 58mm</h3>
+                                <span class="bg-white/10 px-2 py-1 rounded text-xs text-gray-300 backdrop-blur-sm">M42</span>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-4">The King of Swirly Bokeh. ぐるぐるボケの代名詞。</p>
+                            <div class="flex justify-between items-center border-t border-white/10 pt-4">
+                                <span class="text-lg font-mono">¥18,000</span>
+                                <span class="text-xs text-blue-300 tracking-wider group-hover:underline">VIEW DETAILS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group fade-up-element delay-200 cursor-pointer">
+                    <div class="relative overflow-hidden rounded-2xl bg-glass-100 border border-white/10 shadow-xl transition-all duration-500 hover:bg-glass-200 hover:border-white/30 hover:-translate-y-2">
+                        <div class="aspect-[4/3] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1500634245200-e5245c7574ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                                 alt="Super Takumar" 
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold text-white">Super Takumar 50mm f1.4</h3>
+                                <span class="bg-white/10 px-2 py-1 rounded text-xs text-gray-300 backdrop-blur-sm">M42</span>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-4">Golden coating. 黄変が生み出す温かなノスタルジー。</p>
+                            <div class="flex justify-between items-center border-t border-white/10 pt-4">
+                                <span class="text-lg font-mono">¥22,500</span>
+                                <span class="text-xs text-blue-300 tracking-wider group-hover:underline">VIEW DETAILS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group fade-up-element delay-300 cursor-pointer">
+                    <div class="relative overflow-hidden rounded-2xl bg-glass-100 border border-white/10 shadow-xl transition-all duration-500 hover:bg-glass-200 hover:border-white/30 hover:-translate-y-2">
+                        <div class="aspect-[4/3] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1590502593747-42a996133562?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                                 alt="Carl Zeiss" 
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold text-white">Carl Zeiss Jena 35mm</h3>
+                                <span class="bg-white/10 px-2 py-1 rounded text-xs text-gray-300 backdrop-blur-sm">M42</span>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-4">Sharpness and Contrast. 圧倒的な解像度と空気感。</p>
+                            <div class="flex justify-between items-center border-t border-white/10 pt-4">
+                                <span class="text-lg font-mono">¥35,000</span>
+                                <span class="text-xs text-blue-300 tracking-wider group-hover:underline">VIEW DETAILS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="mt-12 text-center md:hidden">
+                 <a href="#" class="text-sm text-gray-400 hover:text-white transition-colors border-b border-gray-600 pb-1">View All Items -></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="h-[60vh] relative flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
+                 alt="City Bokeh" 
+                 class="w-full h-full object-cover opacity-50 fixed-bg-effect">
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        </div>
+        <div class="relative z-10 text-center px-4 fade-up-element">
+            <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-6">Capture the Invisible</h2>
+            <p class="text-gray-300 max-w-xl mx-auto mb-8 font-light">
+                私たちの整備士は、各レンズを極限まで分解・清掃し、<br>ソニーαシリーズでの動作を保証しています。
+            </p>
+            <button class="px-8 py-3 bg-white text-black rounded-full font-bold hover:bg-gray-200 transition-colors transform hover:scale-105 duration-200">
+                DISCOVER MORE
+            </button>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/10 bg-[#050505] pt-20 pb-10 px-6 relative z-10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div class="col-span-1 md:col-span-2">
+                <a href="#" class="text-3xl font-bold tracking-widest text-white mb-6 block">SATORI</a>
+                <p class="text-gray-500 max-w-sm mb-6">
+                    SATORI CAMERA is a premium select shop for refurbished vintage lenses specialized for Sony E-mount system. Based in Tokyo.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/20 transition-colors">IG</a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/20 transition-colors">TW</a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-white/20 transition-colors">FB</a>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-bold mb-6 tracking-widest uppercase text-sm">Shop</h4>
+                <ul class="space-y-4 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-white transition-colors">All Lenses</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Accessories</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Mount Adapters</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Gift Cards</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-white font-bold mb-6 tracking-widest uppercase text-sm">Support</h4>
+                <ul class="space-y-4 text-gray-400 text-sm">
+                    <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Shipping & Returns</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Lens Maintenance</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600">
+            <p>&copy; 2024 SATORI CAMERA. All rights reserved.</p>
+            <div class="flex space-x-6 mt-4 md:mt-0">
+                <a href="#" class="hover:text-gray-400">Privacy Policy</a>
+                <a href="#" class="hover:text-gray-400">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for Fade-in Up Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // Run once
+                    }
+                });
+            }, observerOptions);
+
+            const fadeElements = document.querySelectorAll('.fade-up-element');
+            fadeElements.forEach(el => observer.observe(el));
+        });
+
+        // Parallax Effect for Backgrounds (Simple Implementation)
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const blobs = document.querySelectorAll('.animate-blob');
+            
+            // Subtle movement of background blobs based on scroll
+            blobs.forEach((blob, index) => {
+                const speed = (index + 1) * 0.05;
+                blob.style.transform = `translateY(${scrollY * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>

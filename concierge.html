@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Concierge | SATORI CAMERA</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', 'sans-serif'],
+                        serif: ['Noto Serif JP', 'serif'],
+                    },
+                    colors: {
+                        glass: {
+                            100: 'rgba(255, 255, 255, 0.03)',
+                            200: 'rgba(255, 255, 255, 0.07)',
+                            300: 'rgba(255, 255, 255, 0.15)',
+                            border: 'rgba(255, 255, 255, 0.1)',
+                            indigo: 'rgba(99, 102, 241, 0.1)', // Indigo for "Intellect/Consulting"
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 20s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f0f11;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Noise Texture */
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.06;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f0f11; }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+        
+        .fade-up-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-up-element.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* Custom Tab Styles */
+        .tab-active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        .tab-inactive {
+            color: #9ca3af;
+            border-color: transparent;
+        }
+        .tab-inactive:hover {
+            color: white;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="fixed inset-0 z-[-2] overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-1/3 w-[800px] h-[800px] bg-indigo-900 rounded-full mix-blend-screen filter blur-[128px] opacity-20 animate-blob"></div>
+        <div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-blue-900 rounded-full mix-blend-screen filter blur-[128px] opacity-20 animate-blob animation-delay-2000"></div>
+    </div>
+
+    <div class="bg-noise"></div>
+
+    <nav class="fixed w-full z-40 top-0 p-6">
+        <div class="max-w-7xl mx-auto flex justify-between items-center bg-glass-200 backdrop-blur-xl border border-white/10 rounded-2xl px-8 py-4 shadow-lg transition-all duration-300">
+            <a href="index.html" class="text-2xl font-bold tracking-widest text-white flex items-center group">
+                <span class="group-hover:text-gray-300 transition-colors">SATORI</span>
+            </a>
+            <div class="hidden md:flex space-x-8 text-sm tracking-widest uppercase text-gray-300 items-center">
+                <a href="collection.html" class="hover:text-white transition-colors">Store</a>
+                <a href="sell.html" class="hover:text-white transition-colors">Sell</a>
+                <a href="concierge.html" class="text-white border-b border-white pb-1">Concierge</a>
+            </div>
+            <div class="md:hidden text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative h-[70vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+             <img src="https://images.unsplash.com/photo-1485627941502-d2e6429fa2ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
+             alt="Strategic Vision" 
+             class="w-full h-full object-cover opacity-40 grayscale contrast-125">
+             <div class="absolute inset-0 bg-gradient-to-t from-[#0f0f11] via-[#0f0f11]/40 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto fade-up-element">
+            <div class="inline-block px-4 py-1 mb-6 border border-indigo-500/30 rounded-full bg-indigo-900/20 backdrop-blur-md">
+                <span class="text-xs font-bold tracking-[0.2em] uppercase text-indigo-300">Order Sales & Consulting</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-serif font-medium leading-tight mb-8">
+                Your Vision,<br>
+                <span class="text-gray-500 italic font-sans font-light">Strategically Curated.</span>
+            </h1>
+            <p class="text-gray-300 text-base md:text-lg font-light tracking-wide leading-relaxed max-w-2xl mx-auto mb-10">
+                機材選びは、投資です。<br>
+                元コンサルタントの視点と、SONY専門店の知見で、<br>
+                あなたの「撮りたい」を最短距離で実現する最適解を提案します。
+            </p>
+            <a href="#consultation-form" class="inline-flex items-center justify-center px-10 py-4 text-sm font-bold tracking-widest text-white border border-white/30 rounded-full hover:bg-white hover:text-black transition-all duration-300 backdrop-blur-sm">
+                START CONSULTATION
+            </a>
+        </div>
+    </header>
+
+    <section class="py-24 px-6 relative">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            
+            <div class="fade-up-element">
+                <h2 class="text-3xl md:text-4xl font-serif mb-8 leading-tight">
+                    Rational Selection for<br>
+                    <span class="text-indigo-400">Emotional Results.</span>
+                </h2>
+                <div class="space-y-6 text-gray-400 font-light leading-loose">
+                    <p>
+                        「なんとなく良い写真が撮れそう」という理由で機材を選んでいませんか？
+                        写真は感性のアートですが、機材選びは論理的な戦略であるべきです。
+                    </p>
+                    <p>
+                        SATORI CAMERAのオーナーは、ビジネスコンサルティングのバックグラウンドを持ちます。
+                        私たちは、あなたの予算（Resource）と撮りたいイメージ（Goal）を分析し、ROI（費用対効果）が最も高い機材構成を提案します。
+                    </p>
+                    <p>
+                        SONYボディの性能を極限まで引き出すEマウントレンズ、あるいはデジタルに「味」を加えるオールドレンズ。
+                        膨大な選択肢の中から、あなただけの正解を導き出し、市場から良質な個体を調達（Source）して提供します。
+                    </p>
+                </div>
+            </div>
+
+            <div class="fade-up-element delay-100 relative">
+                <div class="absolute -inset-4 bg-indigo-500/10 rounded-full blur-3xl"></div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-glass-100 border border-white/10 p-6 rounded-2xl backdrop-blur-lg transform translate-y-8">
+                        <div class="text-indigo-400 mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        </div>
+                        <h3 class="font-bold text-white mb-2">Analysis</h3>
+                        <p class="text-xs text-gray-400">被写体、環境、出力媒体から必要なスペックを逆算。</p>
+                    </div>
+
+                    <div class="bg-glass-100 border border-white/10 p-6 rounded-2xl backdrop-blur-lg">
+                        <div class="text-indigo-400 mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                        </div>
+                        <h3 class="font-bold text-white mb-2">Curation</h3>
+                        <p class="text-xs text-gray-400">Sony Eマウントとオールドレンズの深い知識で最適解を選定。</p>
+                    </div>
+
+                    <div class="bg-glass-100 border border-white/10 p-6 rounded-2xl backdrop-blur-lg transform translate-y-8">
+                        <div class="text-indigo-400 mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                        <h3 class="font-bold text-white mb-2">Sourcing</h3>
+                        <p class="text-xs text-gray-400">独自のネットワークで、状態の良い個体のみを厳選調達。</p>
+                    </div>
+
+                    <div class="bg-glass-100 border border-white/10 p-6 rounded-2xl backdrop-blur-lg">
+                        <div class="text-indigo-400 mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h3 class="font-bold text-white mb-2">Result</h3>
+                        <p class="text-xs text-gray-400">納品後すぐに、理想の画作りを始められる状態へ。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="consultation-form" class="py-24 px-6 bg-glass-100 border-t border-white/5 relative">
+        <div class="absolute inset-0 bg-gradient-to-b from-indigo-900/5 to-transparent pointer-events-none"></div>
+        
+        <div class="max-w-4xl mx-auto fade-up-element">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-serif mb-6">Concierge Request</h2>
+                <p class="text-gray-400 text-sm">
+                    ご希望に合わせて、2つのモードからお選びください。
+                </p>
+            </div>
+
+            <div class="flex justify-center mb-10">
+                <div class="bg-black/20 p-1 rounded-full flex space-x-2 border border-white/10">
+                    <button onclick="switchTab('consulting')" id="tab-consulting" class="px-8 py-3 rounded-full text-sm font-bold tracking-widest transition-all duration-300 tab-active">
+                        CONSULTING (提案希望)
+                    </button>
+                    <button onclick="switchTab('order')" id="tab-order" class="px-8 py-3 rounded-full text-sm font-bold tracking-widest transition-all duration-300 tab-inactive">
+                        ORDER (指名注文)
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-glass-200 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+                
+                <form id="form-consulting" class="space-y-8 block animate-fade-in">
+                    <div class="border-l-2 border-indigo-400 pl-4 mb-8">
+                        <p class="text-gray-300 text-sm italic">
+                            「どんな写真を撮りたいか」を教えてください。<br>
+                            あなたの感性を言語化し、それを実現する機材を私が選定します。
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-3">
+                            <label class="text-xs font-bold uppercase tracking-wider text-indigo-300">Target Subject (被写体)</label>
+                            <input type="text" placeholder="e.g. 夜のストリートスナップ、子供のポートレート" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-indigo-500/50 transition-colors">
+                        </div>
+                        <div class="space-y-3">
+                            <label class="text-xs font-bold uppercase tracking-wider text-indigo-300">Desired Mood (画の雰囲気)</label>
+                            <input type="text" placeholder="e.g. 映画のような、コントラスト強め、ノスタルジック" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-indigo-500/50 transition-colors">
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="text-xs font-bold uppercase tracking-wider text-indigo-300">Current Gear (現在の機材)</label>
+                        <textarea rows="2" placeholder="現在お使いのカメラやレンズがあれば教えてください（iPhoneのみでも可）。" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-indigo-500/50 transition-colors resize-none"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-3">
+                            <label class="text-xs font-bold uppercase tracking-wider text-indigo-300">Budget Range (予算感)</label>
+                            <select class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-indigo-500/50 transition-colors appearance-none cursor-pointer">
+                                <option class="bg-[#1a1a1a]">〜 ¥100,000</option>
+                                <option class="bg-[#1a1a1a]">〜 ¥200,000</option>
+                                <option class="bg-[#1a1a1a]">〜 ¥400,000</option>
+                                <option class="bg-[#1a1a1a]">¥500,000 +</option>
+                                <option class="bg-[#1a1a1a]">未定 (提案を見て決定)</option>
+                            </select>
+                        </div>
+                        <div class="space-y-3">
+                            <label class="text-xs font-bold uppercase tracking-wider text-indigo-300">Email Address</label>
+                            <input type="email" placeholder="name@example.com" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-indigo-500/50 transition-colors">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-5 bg-indigo-600 text-white font-bold tracking-widest rounded-lg hover:bg-indigo-500 transition-all transform hover:scale-[1.01] shadow-[0_0_20px_rgba(99,102,241,0.3)]">
+                        REQUEST PROPOSAL
+                    </button>
+                </form>
+
+                <form id="form-order" class="space-y-8 hidden">
+                    <div class="border-l-2 border-white/50 pl-4 mb-8">
+                        <p class="text-gray-300 text-sm italic">
+                            お探しの機材が決まっている方はこちら。<br>
+                            市場に出回らない良個体や、希少なオールドレンズを独自のルートで探します。
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-3">
+                            <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Manufacturer</label>
+                            <input type="text" placeholder="e.g. Sony, Zeiss, Leica" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-white/30 transition-colors">
+                        </div>
+                        <div class="space-y-3">
+                            <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Model Name</label>
+                            <input type="text" placeholder="e.g. α7IV, Summicron 50mm" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-white/30 transition-colors">
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Desired Condition (希望状態)</label>
+                        <select class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-white/30 transition-colors appearance-none cursor-pointer">
+                            <option class="bg-[#1a1a1a]">Mint Only (新品同様のみ)</option>
+                            <option class="bg-[#1a1a1a]">Excellent (美品・光学系クリア)</option>
+                            <option class="bg-[#1a1a1a]">User (実用品・外観スレOK)</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-3">
+                            <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Max Budget (上限予算)</label>
+                            <input type="text" placeholder="¥" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-white/30 transition-colors">
+                        </div>
+                        <div class="space-y-3">
+                            <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Email Address</label>
+                            <input type="email" placeholder="name@example.com" class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-4 text-white focus:outline-none focus:border-white/30 transition-colors">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-5 bg-white text-black font-bold tracking-widest rounded-lg hover:bg-gray-200 transition-all transform hover:scale-[1.01]">
+                        START SOURCING
+                    </button>
+                </form>
+
+            </div>
+            
+            <p class="text-center text-xs text-gray-500 mt-8 leading-relaxed">
+                ※ 提案・お見積もりは無料です。成約時にのみ代金が発生します。<br>
+                ※ ご提案まで通常3営業日ほどお時間をいただきます。
+            </p>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/10 bg-[#050505] py-10 px-6 relative z-10 text-center">
+        <a href="index.html" class="text-xl font-bold tracking-widest text-white mb-4 block">SATORI</a>
+        <div class="flex justify-center space-x-6 text-xs text-gray-500 mb-6">
+            <a href="collection.html" class="hover:text-white transition-colors">Store</a>
+            <a href="maintenance.html" class="hover:text-white transition-colors">Service</a>
+            <a href="sell.html" class="hover:text-white transition-colors">Sell</a>
+            <a href="concierge.html" class="text-white hover:text-white transition-colors">Concierge</a>
+        </div>
+        <p class="text-gray-600 text-xs tracking-wide">&copy; 2024 SATORI CAMERA. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-up-element').forEach(el => observer.observe(el));
+        });
+
+        // Tab Switching Logic
+        function switchTab(mode) {
+            const formConsulting = document.getElementById('form-consulting');
+            const formOrder = document.getElementById('form-order');
+            const tabConsulting = document.getElementById('tab-consulting');
+            const tabOrder = document.getElementById('tab-order');
+
+            if (mode === 'consulting') {
+                formConsulting.classList.remove('hidden');
+                formOrder.classList.add('hidden');
+                
+                tabConsulting.classList.add('tab-active');
+                tabConsulting.classList.remove('tab-inactive');
+                tabOrder.classList.add('tab-inactive');
+                tabOrder.classList.remove('tab-active');
+            } else {
+                formConsulting.classList.add('hidden');
+                formOrder.classList.remove('hidden');
+                
+                tabOrder.classList.add('tab-active');
+                tabOrder.classList.remove('tab-inactive');
+                tabConsulting.classList.add('tab-inactive');
+                tabConsulting.classList.remove('tab-active');
+            }
+        }
+    </script>
+</body>
+</html>

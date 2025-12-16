@@ -1,0 +1,225 @@
+/* ヒーローセクション */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* スライドコンテナ */
+.slideContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* スライド */
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: zoomIn 5s ease-out forwards;
+}
+
+/* 現在のスライド */
+.currentSlide {
+  z-index: 1;
+  opacity: 1;
+}
+
+/* 次のスライド */
+.nextSlide {
+  z-index: 0;
+  opacity: 0;
+}
+
+/* フェードアウトアニメーション */
+.slideOut {
+  animation: fadeOut 1.5s ease-in-out forwards;
+}
+
+/* フェードインアニメーション */
+.slideIn {
+  animation: fadeIn 1.5s ease-in-out forwards;
+}
+
+/* ズームインアニメーション */
+@keyframes zoomIn {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    z-index: 1;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 0;
+    z-index: 0;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    z-index: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 1;
+    z-index: 2;
+    transform: scale(1);
+  }
+}
+
+/* オーバーレイ */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  z-index: 2;
+}
+
+@media (prefers-color-scheme: dark) {
+  .overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.6) 0%,
+      rgba(0, 0, 0, 0.4) 100%
+    );
+  }
+}
+
+/* コンテンツ */
+.heroContent {
+  position: absolute;
+  top: 35%;
+  left: 8%;
+  z-index: 3;
+  max-width: 700px;
+  color: white;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  animation: fadeInUp 1s ease-out;
+}
+
+.heroContent h2 {
+  margin-bottom: var(--spacing-md);
+  text-align: left;
+}
+
+.heroContent p {
+  margin-bottom: var(--spacing-sm);
+  text-align: left;
+  opacity: 0.95;
+}
+
+/* スライドインジケーター */
+.indicators {
+  position: absolute;
+  bottom: var(--spacing-2xl);
+  left: 8%;
+  z-index: 3;
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.indicator {
+  width: 40px;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  padding: 0;
+}
+
+.indicator:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.indicatorActive {
+  background-color: rgba(255, 255, 255, 0.9);
+  width: 60px;
+}
+
+/* アニメーション */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+  .hero {
+    height: 70vh;
+  }
+
+  .heroContent {
+    top: 30%;
+    left: var(--spacing-md);
+    right: var(--spacing-md);
+    max-width: none;
+  }
+
+  .heroContent h2 {
+    font-size: 1.75rem;
+  }
+
+  .heroContent p {
+    font-size: 1rem;
+  }
+
+  .indicators {
+    left: var(--spacing-md);
+    bottom: var(--spacing-xl);
+  }
+
+  .indicator {
+    width: 30px;
+  }
+
+  .indicatorActive {
+    width: 45px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: 60vh;
+  }
+
+  .heroContent h2 {
+    font-size: 1.5rem;
+  }
+
+  .heroContent p {
+    font-size: 0.9rem;
+  }
+}

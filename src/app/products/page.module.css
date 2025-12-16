@@ -1,0 +1,258 @@
+/* ページ全体 */
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ヘッダー */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--color-separator);
+}
+
+@media (prefers-color-scheme: dark) {
+  .header {
+    background-color: rgba(28, 28, 30, 0.8);
+  }
+}
+
+.nav {
+  height: 52px;
+  display: flex;
+  align-items: center;
+}
+
+.navContent {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-label);
+  text-decoration: none;
+}
+
+/* ヒーローセクション */
+.hero {
+  background: linear-gradient(
+    180deg,
+    var(--color-secondary-system-background) 0%,
+    var(--color-system-background) 100%
+  );
+  padding: var(--spacing-3xl) 0;
+  border-bottom: 1px solid var(--color-separator);
+}
+
+.heroContent {
+  text-align: center;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.heroContent h1 {
+  margin-bottom: var(--spacing-md);
+}
+
+.heroContent p {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* メインコンテンツ */
+.main {
+  flex: 1;
+  padding: var(--spacing-3xl) 0;
+}
+
+/* 商品グリッド */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-lg);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* 商品カード */
+.productCard {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.productCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 75%; /* 4:3 aspect ratio */
+  overflow: hidden;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  background-color: var(--color-secondary-system-background);
+}
+
+.productImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
+}
+
+.productCard:hover .productImage {
+  transform: scale(1.05);
+}
+
+.placeholderImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    var(--color-secondary-system-background) 0%,
+    var(--color-tertiary-system-background) 100%
+  );
+}
+
+.cardContent {
+  padding: var(--spacing-md);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.cardContent h3 {
+  color: var(--color-label);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.cardContent p {
+  margin: 0;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: var(--spacing-sm);
+}
+
+.cardFooter span {
+  color: var(--color-label);
+}
+
+.badge {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--color-secondary-system-fill);
+  border-radius: var(--radius-sm);
+  color: var(--color-secondary-label);
+  white-space: nowrap;
+}
+
+/* 空状態 */
+.emptyState {
+  text-align: center;
+  padding: var(--spacing-3xl) 0;
+}
+
+/* フッター */
+.footer {
+  background-color: var(--color-secondary-system-background);
+  padding: var(--spacing-xl) 0;
+  border-top: 1px solid var(--color-separator);
+  margin-top: auto;
+}
+
+.footerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  text-align: center;
+}
+
+.footerLinks {
+  display: flex;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footerLinks a {
+  color: var(--color-secondary-label);
+  transition: color var(--transition-fast);
+  text-decoration: none;
+}
+
+.footerLinks a:hover {
+  color: var(--color-accent);
+}
+
+@media (min-width: 768px) {
+  .footerContent {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+  .hero {
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .heroContent h1 {
+    font-size: 1.75rem;
+  }
+
+  .main {
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--spacing-md);
+  }
+}
+
+/* アニメーション */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

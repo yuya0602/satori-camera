@@ -1,0 +1,331 @@
+/* メイン画像 */
+.mainImageWrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: var(--spacing-md);
+}
+
+.mainImage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-tertiary-system-background);
+  border: none;
+  cursor: zoom-in;
+  transition: transform var(--transition-normal);
+  padding: 0;
+}
+
+.mainImage:hover {
+  transform: scale(1.02);
+}
+
+.mainImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.zoomIcon {
+  position: absolute;
+  bottom: var(--spacing-md);
+  right: var(--spacing-md);
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-size: 1.25rem;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  pointer-events: none;
+}
+
+.mainImage:hover .zoomIcon {
+  opacity: 1;
+}
+
+/* サムネイル一覧 */
+.thumbnailGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: var(--spacing-sm);
+  max-height: 300px;
+  overflow-y: auto;
+  padding: var(--spacing-xs);
+  background-color: var(--color-secondary-system-background);
+  border-radius: var(--radius-md);
+}
+
+@media (min-width: 768px) {
+  .thumbnailGrid {
+    grid-template-columns: repeat(5, 1fr);
+    max-height: none;
+  }
+}
+
+.thumbnail {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 0;
+  background-color: var(--color-tertiary-system-background);
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbnail:hover {
+  border-color: var(--color-accent);
+  transform: scale(1.05);
+}
+
+.thumbnailActive {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent);
+}
+
+/* モーダル */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  animation: fadeIn 0.3s ease-out;
+  outline: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modalContent {
+  max-width: 90vw;
+  max-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContent img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* モーダルコントロール */
+.closeButton {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  width: 44px;
+  height: 44px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: black;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  z-index: 10001;
+}
+
+.closeButton:hover {
+  background-color: white;
+  transform: scale(1.1);
+}
+
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: black;
+  border: none;
+  border-radius: 50%;
+  font-size: 2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  z-index: 10001;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.navButton:hover {
+  background-color: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.navButtonPrev {
+  left: var(--spacing-md);
+}
+
+.navButtonNext {
+  right: var(--spacing-md);
+}
+
+/* 画像カウンター */
+.imageCounter {
+  position: absolute;
+  top: var(--spacing-md);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-md);
+  z-index: 10001;
+}
+
+/* モーダルサムネイル */
+.modalThumbnails {
+  position: absolute;
+  bottom: var(--spacing-md);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--spacing-xs);
+  max-width: 90vw;
+  overflow-x: auto;
+  padding: var(--spacing-sm);
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: var(--radius-md);
+  z-index: 10001;
+}
+
+.modalThumbnail {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 0;
+  background-color: transparent;
+}
+
+.modalThumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modalThumbnail:hover {
+  border-color: white;
+  transform: scale(1.1);
+}
+
+.modalThumbnailActive {
+  border-color: white;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 768px) {
+  .closeButton,
+  .navButton {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+
+  .navButton {
+    font-size: 1.75rem;
+  }
+
+  .modalThumbnails {
+    bottom: var(--spacing-sm);
+    padding: var(--spacing-xs);
+  }
+
+  .modalThumbnail {
+    width: 50px;
+    height: 50px;
+  }
+
+  .imageCounter {
+    top: var(--spacing-sm);
+  }
+}
+
+/* タッチデバイス対応 */
+@media (hover: none) {
+  .mainImage:hover {
+    transform: none;
+  }
+
+  .mainImage:active {
+    transform: scale(0.98);
+  }
+
+  .zoomIcon {
+    opacity: 1;
+  }
+}
+
+/* スクロールバーのスタイリング */
+.thumbnailGrid::-webkit-scrollbar {
+  width: 6px;
+}
+
+.thumbnailGrid::-webkit-scrollbar-track {
+  background: var(--color-tertiary-system-background);
+  border-radius: 3px;
+}
+
+.thumbnailGrid::-webkit-scrollbar-thumb {
+  background: var(--color-separator);
+  border-radius: 3px;
+}
+
+.thumbnailGrid::-webkit-scrollbar-thumb:hover {
+  background: var(--color-secondary-label);
+}
+
+.modalThumbnails::-webkit-scrollbar {
+  height: 6px;
+}
+
+.modalThumbnails::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.modalThumbnails::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.modalThumbnails::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}

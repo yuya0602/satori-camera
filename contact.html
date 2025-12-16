@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | SATORI CAMERA</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', 'sans-serif'],
+                        serif: ['Noto Serif JP', 'serif'],
+                    },
+                    colors: {
+                        glass: {
+                            100: 'rgba(255, 255, 255, 0.03)',
+                            200: 'rgba(255, 255, 255, 0.07)',
+                            300: 'rgba(255, 255, 255, 0.15)',
+                            border: 'rgba(255, 255, 255, 0.1)',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 20s infinite',
+                        'float': 'float 8s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f0f11;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Noise Texture */
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.06;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f0f11; }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+        
+        .fade-up-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-up-element.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Input styling */
+        .input-glow:focus {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+            border-color: rgba(147, 197, 253, 0.5);
+        }
+
+        /* Success Message Animation */
+        #success-message {
+            transition: all 0.5s ease;
+            transform: translateY(10px);
+            opacity: 0;
+            pointer-events: none;
+        }
+        #success-message.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="fixed inset-0 z-[-2] overflow-hidden pointer-events-none">
+        <div class="absolute top-0 right-0 w-[700px] h-[700px] bg-teal-900 rounded-full mix-blend-screen filter blur-[128px] opacity-10 animate-blob"></div>
+        <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-900 rounded-full mix-blend-screen filter blur-[128px] opacity-20 animate-blob animation-delay-2000"></div>
+    </div>
+
+    <div class="bg-noise"></div>
+
+    <nav class="fixed w-full z-40 top-0 p-6">
+        <div class="max-w-7xl mx-auto flex justify-between items-center bg-glass-200 backdrop-blur-xl border border-white/10 rounded-2xl px-8 py-4 shadow-lg transition-all duration-300">
+            <a href="index.html" class="text-2xl font-bold tracking-widest text-white flex items-center group">
+                <span class="group-hover:text-gray-300 transition-colors">SATORI</span>
+            </a>
+            <div class="hidden md:flex space-x-8 text-sm tracking-widest uppercase text-gray-300 items-center">
+                <a href="collection.html" class="hover:text-white transition-colors">Store</a>
+                <a href="journal.html" class="hover:text-white transition-colors">Journal</a>
+            </div>
+            <div class="md:hidden text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </div>
+        </div>
+    </nav>
+
+    <main class="min-h-screen pt-32 pb-20 px-6 flex items-center">
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+            
+            <div class="fade-up-element pt-10">
+                <p class="text-xs tracking-[0.3em] uppercase text-blue-300 mb-6 font-bold">Contact Us</p>
+                <h1 class="text-5xl md:text-7xl font-serif font-medium leading-tight mb-8">
+                    Let's start a<br>
+                    <span class="text-gray-500 italic font-sans">Conversation.</span>
+                </h1>
+                <p class="text-gray-400 font-light leading-relaxed mb-12 max-w-md">
+                    商品に関するご質問、レンズの整備状況、あるいはただ単にオールドレンズの魅力について語りたい場合も。<br>
+                    お気軽にご連絡ください。
+                </p>
+
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 text-gray-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold uppercase tracking-widest text-white mb-1">Email</h3>
+                            <a href="mailto:hello@satoricamera.com" class="text-gray-400 hover:text-white transition-colors">hello@satoricamera.com</a>
+                            <p class="text-xs text-gray-600 mt-1">Usually reply within 24 hours.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 text-gray-300">
+                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold uppercase tracking-widest text-white mb-1">Office</h3>
+                            <p class="text-gray-400">
+                                2-10-1 Nakameguro, Meguro-ku<br>
+                                Tokyo, Japan 153-0061
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-16 relative w-full h-40 rounded-2xl overflow-hidden hidden lg:block opacity-60">
+                    <img src="https://images.unsplash.com/photo-1517488031175-f938c032644b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" class="w-full h-full object-cover grayscale opacity-50" alt="Texture">
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#0f0f11] to-transparent"></div>
+                </div>
+            </div>
+
+            <div class="fade-up-element delay-200">
+                <div class="bg-glass-100 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <form id="contact-form" class="space-y-6 relative z-10">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label for="first-name" class="text-xs font-bold uppercase tracking-wider text-gray-500">First Name</label>
+                                <input type="text" id="first-name" required
+                                    class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:bg-white/10 transition-all duration-300 input-glow" 
+                                    placeholder="Taro">
+                            </div>
+                            <div class="space-y-2">
+                                <label for="last-name" class="text-xs font-bold uppercase tracking-wider text-gray-500">Last Name</label>
+                                <input type="text" id="last-name" required
+                                    class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:bg-white/10 transition-all duration-300 input-glow" 
+                                    placeholder="Yamada">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="email" class="text-xs font-bold uppercase tracking-wider text-gray-500">Email Address</label>
+                            <input type="email" id="email" required
+                                class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:bg-white/10 transition-all duration-300 input-glow" 
+                                placeholder="name@example.com">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="subject" class="text-xs font-bold uppercase tracking-wider text-gray-500">Subject</label>
+                            <select id="subject" 
+                                class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:bg-white/10 transition-all duration-300 input-glow appearance-none">
+                                <option class="bg-[#1a1a1a]">商品について (Product Inquiry)</option>
+                                <option class="bg-[#1a1a1a]">配送・返品について (Shipping & Returns)</option>
+                                <option class="bg-[#1a1a1a]">修理・メンテナンス (Repair Service)</option>
+                                <option class="bg-[#1a1a1a]">その他 (Other)</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="message" class="text-xs font-bold uppercase tracking-wider text-gray-500">Message</label>
+                            <textarea id="message" rows="5" required
+                                class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:bg-white/10 transition-all duration-300 input-glow resize-none" 
+                                placeholder="How can we help you?"></textarea>
+                        </div>
+
+                        <button type="submit" 
+                            class="w-full py-4 bg-white text-black font-bold tracking-widest rounded-lg hover:bg-gray-200 transition-all duration-300 transform hover:scale-[1.02] mt-4 flex justify-center items-center group">
+                            <span>SEND MESSAGE</span>
+                            <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </button>
+                    </form>
+
+                    <div id="success-message" class="absolute inset-0 bg-[#0f0f11]/95 backdrop-blur-md flex flex-col items-center justify-center text-center p-8 z-20">
+                        <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center text-green-400 mb-6">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <h3 class="text-2xl font-serif mb-2">Thank you.</h3>
+                        <p class="text-gray-400 text-sm mb-6">メッセージを受け付けました。<br>確認後、担当者よりご連絡いたします。</p>
+                        <button onclick="resetForm()" class="text-xs font-bold uppercase tracking-widest text-white border-b border-white/30 pb-1 hover:border-white transition-colors">Send another message</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fixed bottom-6 right-6 z-30 hidden lg:block fade-up-element delay-300">
+            <div class="bg-glass-200 backdrop-blur-md border border-white/10 rounded-2xl p-6 w-72 shadow-2xl">
+                <h4 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">Before you ask</h4>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex justify-between">Shipping Policy <span>→</span></a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex justify-between">Warranty Info <span>→</span></a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white transition-colors flex justify-between">Lens Grading <span>→</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-white/10 bg-[#050505] py-10 px-6 relative z-10 text-center">
+        <a href="index.html" class="text-xl font-bold tracking-widest text-white mb-4 block">SATORI</a>
+        <p class="text-gray-600 text-xs tracking-wide">&copy; 2024 SATORI CAMERA. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animation Observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-up-element').forEach(el => observer.observe(el));
+            
+            // Form Submission Handling
+            const form = document.getElementById('contact-form');
+            const successMsg = document.getElementById('success-message');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Simulate sending delay
+                const btn = form.querySelector('button');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="animate-pulse">SENDING...</span>';
+                
+                setTimeout(() => {
+                    successMsg.classList.add('active');
+                    btn.innerHTML = originalText;
+                }, 1500);
+            });
+        });
+
+        function resetForm() {
+            document.getElementById('contact-form').reset();
+            document.getElementById('success-message').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

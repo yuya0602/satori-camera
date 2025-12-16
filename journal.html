@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SATORI JOURNAL | Stories of Light</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', 'sans-serif'],
+                        serif: ['Noto Serif JP', 'serif'],
+                    },
+                    colors: {
+                        glass: {
+                            100: 'rgba(255, 255, 255, 0.03)',
+                            200: 'rgba(255, 255, 255, 0.07)',
+                            300: 'rgba(255, 255, 255, 0.15)',
+                            border: 'rgba(255, 255, 255, 0.1)',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 20s infinite',
+                        'float': 'float 8s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f0f11;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Noise Texture */
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.06;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Vertical Text */
+        .writing-vertical {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            letter-spacing: 0.3em;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f0f11; }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+        
+        .fade-up-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-up-element.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Delay utilities */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="fixed inset-0 z-[-2] overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-[600px] h-[600px] bg-slate-900 rounded-full mix-blend-screen filter blur-[128px] opacity-30 animate-blob"></div>
+        <div class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-indigo-900 rounded-full mix-blend-screen filter blur-[128px] opacity-20 animate-blob animation-delay-2000"></div>
+    </div>
+
+    <div class="bg-noise"></div>
+
+    <nav class="fixed w-full z-40 top-0 p-6">
+        <div class="max-w-7xl mx-auto flex justify-between items-center bg-glass-200 backdrop-blur-xl border border-white/10 rounded-2xl px-8 py-4 shadow-lg transition-all duration-300">
+            <a href="index.html" class="text-2xl font-bold tracking-widest text-white flex items-center group">
+                <span class="group-hover:text-gray-300 transition-colors">SATORI</span>
+            </a>
+            <div class="hidden md:flex space-x-8 text-sm tracking-widest uppercase text-gray-300 items-center">
+                <a href="collection.html" class="hover:text-white transition-colors">Store</a>
+                <a href="philosophy.html" class="hover:text-white transition-colors">Philosophy</a>
+            </div>
+            <div class="md:hidden text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </div>
+        </div>
+    </nav>
+
+    <header class="pt-40 pb-20 px-6 relative">
+        <div class="max-w-7xl mx-auto flex justify-between items-end border-b border-white/10 pb-12 fade-up-element">
+            <div>
+                <p class="text-xs md:text-sm tracking-[0.3em] uppercase text-blue-300 mb-4 font-bold">The Journal</p>
+                <h1 class="text-5xl md:text-7xl font-serif font-light leading-none">
+                    Visual<br><span class="text-gray-500 italic font-sans">Stories</span>
+                </h1>
+            </div>
+            
+            <div class="hidden md:block absolute right-10 top-40 opacity-50">
+                <div class="flex gap-4 writing-vertical text-xs tracking-widest text-gray-400 font-serif border-r border-white/10 pr-6 h-40">
+                    <span>光の記録と記憶</span>
+                    <span>レンズ越しの世界</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto mt-8 overflow-x-auto pb-4 scrollbar-hide fade-up-element delay-100">
+            <div class="flex space-x-6 text-sm tracking-widest uppercase text-gray-500 whitespace-nowrap">
+                <a href="#" class="text-white border-b border-white pb-1">All Stories</a>
+                <a href="#" class="hover:text-white transition-colors">Lens Reviews</a>
+                <a href="#" class="hover:text-white transition-colors">Photo Essays</a>
+                <a href="#" class="hover:text-white transition-colors">Interviews</a>
+                <a href="#" class="hover:text-white transition-colors">Maintenance</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="px-6 pb-32">
+        <div class="max-w-7xl mx-auto">
+            
+            <section class="mb-24 fade-up-element delay-200">
+                <a href="journal-article.html" class="group relative block w-full aspect-[16/9] md:aspect-[21/9] rounded-2xl overflow-hidden shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1470115636492-6d2b56f9146d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
+                         alt="Featured Article" 
+                         class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-500"></div>
+                    
+                    <div class="absolute bottom-0 left-0 p-8 md:p-12 w-full md:w-2/3">
+                        <span class="inline-block py-1 px-3 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold tracking-wider uppercase mb-4 border border-white/20">
+                            Editor's Pick
+                        </span>
+                        <h2 class="text-3xl md:text-5xl font-serif font-medium mb-4 leading-tight group-hover:underline decoration-1 underline-offset-8 decoration-white/30">
+                            なぜ、私たちは<br>「ぐるぐるボケ」に惹かれるのか。
+                        </h2>
+                        <p class="text-gray-300 font-light mb-6 line-clamp-2 md:line-clamp-none">
+                            完璧なデジタル描写へのアンチテーゼ。Helios 44-2が教えてくれる、不完全であることの美しさと、記憶の中の情景について。
+                        </p>
+                        <div class="flex items-center text-xs tracking-widest text-gray-400 uppercase">
+                            <span>Oct 12, 2024</span>
+                            <span class="mx-3">•</span>
+                            <span>Lens Review</span>
+                        </div>
+                    </div>
+                </a>
+            </section>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+                
+                <article class="group fade-up-element cursor-pointer">
+                    <div class="aspect-[4/3] rounded-xl overflow-hidden mb-6 bg-glass-100 border border-white/5 relative">
+                        <img src="https://images.unsplash.com/photo-1516724562728-afc824a36e84?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Article 1" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute top-4 left-4 bg-black/50 backdrop-blur px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider">Essay</div>
+                    </div>
+                    <div class="pr-4">
+                        <div class="text-xs text-gray-500 mb-2 font-mono">SEP 28, 2024</div>
+                        <h3 class="text-xl font-serif font-medium leading-snug mb-3 group-hover:text-blue-300 transition-colors">
+                            雨の日の東京と、<br>Super Takumar。
+                        </h3>
+                        <p class="text-sm text-gray-400 font-light line-clamp-3 leading-relaxed">
+                            黄変したレンズを通すことで、東京の冷たい雨が、どこか懐かしい昭和の風景のように映ります。アトムレンズが描く独特の温かみ。
+                        </p>
+                    </div>
+                </article>
+
+                <article class="group fade-up-element delay-100 cursor-pointer">
+                    <div class="aspect-[4/3] rounded-xl overflow-hidden mb-6 bg-glass-100 border border-white/5 relative">
+                        <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Article 2" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                         <div class="absolute top-4 left-4 bg-black/50 backdrop-blur px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider">Technique</div>
+                    </div>
+                    <div class="pr-4">
+                        <div class="text-xs text-gray-500 mb-2 font-mono">SEP 15, 2024</div>
+                        <h3 class="text-xl font-serif font-medium leading-snug mb-3 group-hover:text-blue-300 transition-colors">
+                            マニュアルフォーカスで、<br>「時間」を撮る。
+                        </h3>
+                        <p class="text-sm text-gray-400 font-light line-clamp-3 leading-relaxed">
+                            AFに頼らず、自分の手でピントを合わせる行為。それは被写体と対話する時間そのものです。ピーキング機能の上手な使い方。
+                        </p>
+                    </div>
+                </article>
+
+                <article class="group fade-up-element delay-200 cursor-pointer">
+                    <div class="aspect-[4/3] rounded-xl overflow-hidden mb-6 bg-glass-100 border border-white/5 relative">
+                        <img src="https://images.unsplash.com/photo-1554048612-387768052bf7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Article 3" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                         <div class="absolute top-4 left-4 bg-black/50 backdrop-blur px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider">Interview</div>
+                    </div>
+                    <div class="pr-4">
+                        <div class="text-xs text-gray-500 mb-2 font-mono">AUG 30, 2024</div>
+                        <h3 class="text-xl font-serif font-medium leading-snug mb-3 group-hover:text-blue-300 transition-colors">
+                            レンズ整備士の<br>静かなる情熱。
+                        </h3>
+                        <p class="text-sm text-gray-400 font-light line-clamp-3 leading-relaxed">
+                            「カビは敵ではない、歴史の一部だ」と語る、SATORI専属リペアマンへのロングインタビュー。50年前のガラスを蘇らせる技術。
+                        </p>
+                    </div>
+                </article>
+
+                <article class="group fade-up-element delay-300 cursor-pointer">
+                    <div class="aspect-[4/3] rounded-xl overflow-hidden mb-6 bg-glass-100 border border-white/5 relative">
+                        <img src="https://images.unsplash.com/photo-1590502593747-42a996133562?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Article 4" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                         <div class="absolute top-4 left-4 bg-black/50 backdrop-blur px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider">History</div>
+                    </div>
+                    <div class="pr-4">
+                        <div class="text-xs text-gray-500 mb-2 font-mono">AUG 12, 2024</div>
+                        <h3 class="text-xl font-serif font-medium leading-snug mb-3 group-hover:text-blue-300 transition-colors">
+                            Carl Zeiss Jena:<br>東と西に引き裂かれた光学。
+                        </h3>
+                        <p class="text-sm text-gray-400 font-light line-clamp-3 leading-relaxed">
+                            ベルリンの壁が崩壊するまで、ツァイスは二つ存在しました。東ドイツ製ツァイス「Jena」の魅力と、その数奇な運命。
+                        </p>
+                    </div>
+                </article>
+
+                 <article class="group fade-up-element delay-400 cursor-pointer">
+                    <div class="aspect-[4/3] rounded-xl overflow-hidden mb-6 bg-glass-100 border border-white/5 relative">
+                        <img src="https://images.unsplash.com/photo-1510137600163-2729bc6999ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Article 5" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                         <div class="absolute top-4 left-4 bg-black/50 backdrop-blur px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider">Review</div>
+                    </div>
+                    <div class="pr-4">
+                        <div class="text-xs text-gray-500 mb-2 font-mono">JUL 22, 2024</div>
+                        <h3 class="text-xl font-serif font-medium leading-snug mb-3 group-hover:text-blue-300 transition-colors">
+                            Jupiter-8:<br>ソビエトの白い貴公子。
+                        </h3>
+                        <p class="text-sm text-gray-400 font-light line-clamp-3 leading-relaxed">
+                            Leica Lマウントの模倣から始まったこのレンズは、本家にはない柔らかさと、驚くほどのコストパフォーマンスを持っています。
+                        </p>
+                    </div>
+                </article>
+
+                 <article class="group fade-up-element delay-400 cursor-pointer">
+                    <div class="aspect-[4/3] rounded-xl overflow-hidden mb-6 bg-glass-100 border border-white/5 relative">
+                        <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Article 6" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                         <div class="absolute top-4 left-4 bg-black/50 backdrop-blur px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider">News</div>
+                    </div>
+                    <div class="pr-4">
+                        <div class="text-xs text-gray-500 mb-2 font-mono">JUL 05, 2024</div>
+                        <h3 class="text-xl font-serif font-medium leading-snug mb-3 group-hover:text-blue-300 transition-colors">
+                            ポップアップストア開催決定。<br>in 中目黒
+                        </h3>
+                        <p class="text-sm text-gray-400 font-light line-clamp-3 leading-relaxed">
+                            8月の週末限定で、実際の商品をお手に取って試写いただけるイベントを開催します。愛機をお持ちの上、お越しください。
+                        </p>
+                    </div>
+                </article>
+
+            </div>
+
+            <div class="mt-24 text-center fade-up-element">
+                <div class="inline-flex items-center space-x-2">
+                    <span class="w-2 h-2 rounded-full bg-white"></span>
+                    <span class="w-2 h-2 rounded-full bg-white/20"></span>
+                    <span class="w-2 h-2 rounded-full bg-white/20"></span>
+                </div>
+                <div class="mt-8">
+                    <button class="px-10 py-4 border border-white/20 rounded-full text-sm font-bold tracking-widest text-white hover:bg-white hover:text-black transition-all duration-300">
+                        LOAD OLDER STORIES
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section class="py-24 px-6 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-900/20 to-purple-900/20 z-0"></div>
+        <div class="relative z-10 max-w-2xl mx-auto text-center fade-up-element">
+            <h2 class="text-3xl font-serif mb-6">Join the Circle</h2>
+            <p class="text-gray-400 mb-8 font-light">
+                新着レンズの入荷情報や、写真に関するエッセイを<br>
+                週に一度、静かな夜にお届けします。
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <input type="email" placeholder="Your email address" class="flex-1 bg-white/5 border border-white/20 rounded-full px-6 py-4 text-white focus:outline-none focus:border-white/50 focus:bg-white/10 transition-all placeholder-gray-500">
+                <button class="px-8 py-4 bg-white text-black rounded-full font-bold tracking-widest hover:bg-gray-200 transition-colors">
+                    SUBSCRIBE
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/10 bg-[#050505] py-10 px-6 relative z-10 text-center">
+        <div class="mb-4">
+            <a href="index.html" class="text-xl font-bold tracking-widest text-white">SATORI</a>
+        </div>
+        <div class="flex justify-center space-x-6 text-xs text-gray-500 mb-6">
+            <a href="#" class="hover:text-white transition-colors">Instagram</a>
+            <a href="#" class="hover:text-white transition-colors">Twitter</a>
+            <a href="#" class="hover:text-white transition-colors">Contact</a>
+        </div>
+        <p class="text-gray-700 text-xs tracking-wide">&copy; 2024 SATORI CAMERA. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-up-element').forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>

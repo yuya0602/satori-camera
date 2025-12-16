@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Swirly Bokeh Magic | SATORI JOURNAL</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', 'sans-serif'],
+                        serif: ['Noto Serif JP', 'serif'],
+                    },
+                    colors: {
+                        glass: {
+                            100: 'rgba(255, 255, 255, 0.03)',
+                            200: 'rgba(255, 255, 255, 0.07)',
+                            300: 'rgba(255, 255, 255, 0.15)',
+                            border: 'rgba(255, 255, 255, 0.1)',
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 15s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f0f11;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Noise Texture */
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.06;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Progress Bar */
+        #progress-bar {
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            transition: width 0.1s ease;
+        }
+
+        /* Custom Typography Styles */
+        .article-content p {
+            margin-bottom: 2rem;
+            line-height: 2;
+            color: #d1d5db; /* gray-300 */
+            font-weight: 300;
+        }
+        .article-content h2 {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 1.875rem; /* 3xl */
+            line-height: 2.25rem;
+            font-weight: 500;
+            margin-top: 4rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+        .article-content h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.25rem; /* xl */
+            font-weight: 600;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        
+        /* Drop cap */
+        .drop-cap::first-letter {
+            float: left;
+            font-size: 3.5rem;
+            line-height: 3rem;
+            font-weight: bold;
+            margin-right: 0.75rem;
+            margin-top: 0.25rem;
+            color: white;
+            font-family: 'Noto Serif JP', serif;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f0f11; }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+        
+        .fade-up-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-up-element.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="progress-bar"></div>
+
+    <div class="fixed inset-0 z-[-2] overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-0 w-[600px] h-[600px] bg-blue-900/20 rounded-full mix-blend-screen filter blur-[128px] animate-blob"></div>
+        <div class="absolute bottom-40 right-0 w-[500px] h-[500px] bg-purple-900/20 rounded-full mix-blend-screen filter blur-[128px] animate-blob animation-delay-2000"></div>
+    </div>
+
+    <div class="bg-noise"></div>
+
+    <nav class="fixed w-full z-40 top-0 p-6 transition-transform duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto flex justify-between items-center bg-glass-200 backdrop-blur-md border border-glass-border rounded-2xl px-6 py-4 shadow-lg">
+            <a href="index.html" class="text-xl font-bold tracking-widest text-white">SATORI</a>
+            <div class="flex items-center space-x-6 text-xs tracking-widest uppercase text-gray-400">
+                <a href="#" class="hover:text-white transition-colors flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Back to Journal
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative h-[70vh] w-full flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+             <img src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
+             alt="Forest Bokeh" 
+             class="w-full h-full object-cover">
+             <div class="absolute inset-0 bg-gradient-to-t from-[#0f0f11] via-[#0f0f11]/60 to-transparent"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-4xl mx-auto px-6 text-center mt-20 fade-up-element">
+            <div class="inline-block px-3 py-1 mb-6 border border-white/30 rounded-full bg-white/5 backdrop-blur-sm">
+                <span class="text-xs font-bold tracking-[0.2em] uppercase text-white">Lens Review</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-serif font-medium leading-tight mb-8">
+                なぜ、私たちは<br>
+                「ぐるぐるボケ」に惹かれるのか。
+            </h1>
+            <div class="flex items-center justify-center space-x-6 text-sm text-gray-300 font-light tracking-wide">
+                <span>Oct 12, 2024</span>
+                <span class="w-1 h-1 bg-gray-500 rounded-full"></span>
+                <span>By Kenji Sato</span>
+                <span class="w-1 h-1 bg-gray-500 rounded-full"></span>
+                <span>5 min read</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative px-6 pb-24">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+            
+            <aside class="hidden lg:block lg:col-span-3">
+                <div class="sticky top-32 space-y-8 fade-up-element delay-100">
+                    <div>
+                        <h4 class="text-xs font-bold tracking-widest text-gray-500 uppercase mb-4">Share</h4>
+                        <div class="flex flex-col space-y-3">
+                            <button class="w-10 h-10 rounded-full bg-glass-200 border border-glass-border flex items-center justify-center text-white hover:bg-white hover:text-black transition-all">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                            </button>
+                            <button class="w-10 h-10 rounded-full bg-glass-200 border border-glass-border flex items-center justify-center text-white hover:bg-white hover:text-black transition-all">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <article class="col-span-1 lg:col-span-6 article-content fade-up-element delay-200">
+                <p class="drop-cap text-lg md:text-xl text-gray-200 font-serif leading-loose mb-10">
+                    現代のデジタルカメラは、あまりに完璧です。隅々まで解像し、収差はなく、色は正確そのもの。しかし、時として私たちは、その完璧さに息苦しさを覚えることがあります。なぜ、解像度の劣る古いガラス玉に、これほどまでに心が惹かれるのでしょうか。その答えの一つが、ロシアの大地が生んだ銘玉「Helios 44-2」にあります。
+                </p>
+
+                <h2>不完全さが生む、物語</h2>
+                <p>
+                    Helios 44-2の最大の特徴は、背景が渦を巻くようにボケる「Swirly Bokeh（ぐるぐるボケ）」です。これは本来、レンズ設計上の欠陥（非点収差と口径食）に過ぎません。技術者たちはこの欠陥を消そうと躍起になりましたが、写真家たちは逆に、この「欠陥」を「個性」として愛しました。
+                </p>
+                <p>
+                    被写体の背後で世界が歪み、回転する。その描写はまるで、記憶の中の情景のようです。夢の中で見る景色のように、中心だけが鮮明で、周りは曖昧に溶けていく。このレンズを通すことで、日常の風景はたちまち映画のワンシーンへと変わります。
+                </p>
+
+                <figure class="my-12 -mx-6 md:-mx-12 lg:-mx-16 group cursor-zoom-in">
+                    <div class="relative overflow-hidden rounded-xl border border-white/5 shadow-2xl">
+                         <img src="https://images.unsplash.com/photo-1550949826-5bc9576b5c77?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+                             alt="Helios Bokeh Example" 
+                             class="w-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <figcaption class="text-center text-xs text-gray-500 mt-4 font-mono tracking-widest">SHOT ON SONY A7III + HELIOS 44-2</figcaption>
+                </figure>
+
+                <h2>Zeissの血を引くもの</h2>
+                <p>
+                    Heliosのルーツは、ドイツのCarl Zeiss Jenaが開発した「Biotar 58mm F2」にあります。第二次世界大戦後、賠償の一環として設計図と硝材がソビエト連邦に渡り、KMZ工場で量産されたのがHeliosです。
+                </p>
+                <p>
+                    つまり、この安価なレンズの中には、かつて世界最高峰と謳われたZeissの魂が宿っているのです。個体差が激しいことでも知られていますが、SATORI CAMERAでは数ある個体の中から、特に描写性能に優れた「当たりの一本」を選定し、整備しています。
+                </p>
+
+                <blockquote class="border-l-2 border-blue-500 pl-6 py-2 my-12 italic text-xl text-gray-300 font-serif leading-relaxed bg-white/5 rounded-r-lg">
+                    "写真は光で描く絵画だとするならば、レンズは筆である。Heliosは、油絵具のような濃厚な筆致を我々に与えてくれる。"
+                </blockquote>
+
+                <h3>逆光のフレアを楽しむ</h3>
+                <p>
+                    現代のコーティング技術とは異なり、オールドレンズは逆光に弱いです。しかし、それを逆手に取ってください。太陽の光を取り込むと、シャワーのような虹色のフレアが現れます。コントラストが低下し、全体が白っぽくなる「ヴェール」効果は、ポートレートにおいて肌を美しく見せる天然のフィルターとなります。
+                </p>
+
+                <div class="my-16 relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
+                    <div class="relative bg-glass-200 backdrop-blur-xl border border-white/10 rounded-xl p-6 flex flex-col sm:flex-row items-center gap-6">
+                        <div class="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-black/20 border border-white/10">
+                            <img src="https://images.unsplash.com/photo-1617005082133-548c4dd27f35?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Helios Product" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1 text-center sm:text-left">
+                            <span class="text-xs text-blue-400 font-bold uppercase tracking-wider">Featured Lens</span>
+                            <h4 class="text-lg font-bold text-white mt-1">Helios 44-2 58mm f2</h4>
+                            <p class="text-xs text-gray-400 mt-1">Refurbished / M42 Mount / Excellent</p>
+                        </div>
+                        <a href="product.html" class="px-6 py-3 bg-white text-black text-xs font-bold tracking-widest rounded-full hover:bg-gray-200 transition-colors whitespace-nowrap">
+                            VIEW ITEM
+                        </a>
+                    </div>
+                </div>
+
+                <h2>結論：最初の一本にして、最高の一本</h2>
+                <p>
+                    オールドレンズの世界への入り口として、Helios 44-2ほど適したレンズはありません。手頃な価格でありながら、最新の高級レンズでも表現できない「個性」を持っています。あなたのカメラバッグにこの一本を忍ばせておくだけで、ありふれた散歩道が、魔法のような光景に変わることを約束します。
+                </p>
+            </article>
+
+            <aside class="hidden lg:block lg:col-span-3">
+                <div class="sticky top-32 fade-up-element delay-300">
+                    <h4 class="text-xs font-bold tracking-widest text-gray-500 uppercase mb-6 border-b border-white/10 pb-2">Related Stories</h4>
+                    
+                    <div class="space-y-6">
+                        <a href="#" class="block group">
+                            <div class="aspect-video rounded-lg overflow-hidden mb-3 border border-white/5 opacity-80 group-hover:opacity-100 transition-opacity">
+                                <img src="https://images.unsplash.com/photo-1590502593747-42a996133562?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Zeiss" class="w-full h-full object-cover">
+                            </div>
+                            <h5 class="text-sm font-bold text-gray-300 group-hover:text-white transition-colors leading-snug">The Sharpness of Zeiss: Looking into the Soul</h5>
+                        </a>
+                        
+                        <a href="#" class="block group">
+                            <div class="aspect-video rounded-lg overflow-hidden mb-3 border border-white/5 opacity-80 group-hover:opacity-100 transition-opacity">
+                                <img src="https://images.unsplash.com/photo-1510849529004-730351a05b54?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Film" class="w-full h-full object-cover">
+                            </div>
+                            <h5 class="text-sm font-bold text-gray-300 group-hover:text-white transition-colors leading-snug">Film vs Digital: Why we still choose grain</h5>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    <section class="border-t border-white/10 py-20 px-6 bg-white/5">
+        <div class="max-w-7xl mx-auto">
+            <h3 class="text-2xl font-serif mb-10 text-center">More from Journal</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <a href="#" class="group">
+                    <div class="aspect-[3/2] rounded-xl bg-gray-800 overflow-hidden mb-4 border border-white/10">
+                        <img src="https://images.unsplash.com/photo-1490100667990-4fced8021649?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Article 1" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500">
+                    </div>
+                    <span class="text-xs text-blue-400 font-bold uppercase">Technique</span>
+                    <h4 class="text-lg font-bold text-white mt-2 group-hover:underline decoration-white/30 underline-offset-4">Manual Focus Mastery</h4>
+                </a>
+                <a href="#" class="group">
+                    <div class="aspect-[3/2] rounded-xl bg-gray-800 overflow-hidden mb-4 border border-white/10">
+                        <img src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Article 2" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500">
+                    </div>
+                    <span class="text-xs text-purple-400 font-bold uppercase">Interview</span>
+                    <h4 class="text-lg font-bold text-white mt-2 group-hover:underline decoration-white/30 underline-offset-4">Talks with Lens Repairman</h4>
+                </a>
+                <a href="#" class="group">
+                    <div class="aspect-[3/2] rounded-xl bg-gray-800 overflow-hidden mb-4 border border-white/10">
+                        <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Article 3" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500">
+                    </div>
+                    <span class="text-xs text-amber-400 font-bold uppercase">History</span>
+                    <h4 class="text-lg font-bold text-white mt-2 group-hover:underline decoration-white/30 underline-offset-4">The Fall of Soviet Optics</h4>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#050505] py-10 px-6 text-center border-t border-white/10">
+        <a href="index.html" class="text-xl font-bold tracking-widest text-white mb-4 block">SATORI</a>
+        <p class="text-gray-600 text-xs tracking-wide">&copy; 2024 SATORI CAMERA. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animation Observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-up-element').forEach(el => observer.observe(el));
+            
+            // Progress Bar Logic
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                document.getElementById("progress-bar").style.width = scrolled + "%";
+                
+                // Navbar transparency toggle
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('py-2');
+                    navbar.classList.remove('py-6');
+                } else {
+                    navbar.classList.add('py-6');
+                    navbar.classList.remove('py-2');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
