@@ -15,9 +15,9 @@ export async function generateStaticParams() {
 }
 
 interface ProductPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function ProductDetailPage({ params }: ProductPageProps) {

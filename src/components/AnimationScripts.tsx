@@ -1,11 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 export default function AnimationScripts() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     // Intersection Observer for Fade-in Up Animation
@@ -49,7 +48,7 @@ export default function AnimationScripts() {
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(timeoutId);
     };
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   return null;
 }

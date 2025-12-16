@@ -15,9 +15,9 @@ export async function generateStaticParams() {
 }
 
 interface TagPageProps {
-  params: {
+  params: Promise<{
     tagName: string;
-  };
+  }>;
 }
 
 export default async function TagPage({ params }: TagPageProps) {

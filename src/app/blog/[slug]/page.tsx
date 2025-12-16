@@ -2,7 +2,7 @@ import { getPostBySlug, getAllPosts } from '@/lib/blog';
 import Link from 'next/link';
 import BlogArticleScripts from '@/components/BlogArticleScripts';
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
 

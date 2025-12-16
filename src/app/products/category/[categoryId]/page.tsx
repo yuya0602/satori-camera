@@ -4,9 +4,10 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 // Generate static params for all categories
+// Generate static params for all categories
 export async function generateStaticParams() {
   const products = await getProducts();
-  const categories = [...new Set(products.map(p => p.category))];
+  const categories = [...new Set(products.map(p => p.category).filter(c => c && c.trim().length > 0))];
 
   return categories.map((category) => ({
     categoryId: category,
@@ -14,9 +15,9 @@ export async function generateStaticParams() {
 }
 
 interface CategoryPageProps {
-  params: {
+  params: Promise<{
     categoryId: string;
-  };
+  }>;
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
